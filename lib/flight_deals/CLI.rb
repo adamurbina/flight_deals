@@ -1,8 +1,8 @@
 class FlightDeals::CLI
     attr_reader :CITIES
 
-    CITIES = ["NYC", "SF", "LA", "BOSTON", "CHICAGO", "DALLAS", "MIAMI", "PHILLY", "PHOENIX", "PORTLAND", "SEATTLE", "DC"]
-    URL_LOOKUP = {"NYC" => "nyc", "SF" => "sfo", "LA" => "lax", "BOSTON" => "boston-flight-deals", "CHICAGO" => "chicago", "DALLAS" => "dallas", "MIAMI" => "miami", "PHILLY" => "philadelphia", "PHOENIX" => "phoenix", "PORTLAND" => "portland", "SEATTLE" => "seattle-flight-deals", "DC" => "dc"}
+    CITIES = ["NEW YORK CITY", "SAN FRANCISCO", "LOS ANGELES", "BOSTON", "CHICAGO", "DALLAS", "MIAMI", "PHILLY", "PHOENIX", "PORTLAND", "SEATTLE", "DC"]
+    URL_LOOKUP = {"NEW YORK CITY" => "nyc", "SAN FRANCISCO" => "sfo", "LOS ANGELES" => "lax", "BOSTON" => "boston-flight-deals", "CHICAGO" => "chicago", "DALLAS" => "dallas", "MIAMI" => "miami", "PHILLY" => "philadelphia", "PHOENIX" => "phoenix", "PORTLAND" => "portland", "SEATTLE" => "seattle-flight-deals", "DC" => "dc"}
 
     def start
         puts "Welcome to the finding Daily Deals!"
@@ -20,7 +20,7 @@ class FlightDeals::CLI
     def get_deals
         input = gets.chomp
         if (1..CITIES.size).include?(input.to_i)
-            puts "url is #{URL_LOOKUP[CITIES[(input.to_i) - 1]]} "
+            #puts "url is #{URL_LOOKUP[CITIES[(input.to_i) - 1]]} "
         elsif input == "exit"
             puts "Goodbye see you next time!"
             exit
