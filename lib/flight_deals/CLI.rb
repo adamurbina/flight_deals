@@ -1,5 +1,5 @@
 class FlightDeals::CLI
-    attr_reader :CITIES
+    attr_reader :CITIES, :deals
 
     CITIES = ["NEW YORK CITY", "SAN FRANCISCO", "LOS ANGELES", "BOSTON", "CHICAGO", "DALLAS", "MIAMI", "PHILLY", "PHOENIX", "PORTLAND", "SEATTLE", "DC"]
     URL_LOOKUP = {"NEW YORK CITY" => "nyc", "SAN FRANCISCO" => "sfo", "LOS ANGELES" => "lax", "BOSTON" => "boston-flight-deals", "CHICAGO" => "chicago", "DALLAS" => "dallas", "MIAMI" => "miami", "PHILLY" => "philadelphia", "PHOENIX" => "phoenix", "PORTLAND" => "portland", "SEATTLE" => "seattle-flight-deals", "DC" => "dc"}
@@ -28,8 +28,8 @@ class FlightDeals::CLI
         input = gets.chomp
         if (1..CITIES.size).include?(input.to_i)
             puts "Showing #{CITIES[(input.to_i)-1]} deals >>>"
-            deals = Scraper.city_scraper(URL_LOOKUP[CITIES[(input.to_i) - 1]])
-            deals.each.with_index(1) do |deal, i|
+            @deals = Scraper.city_scraper(URL_LOOKUP[CITIES[(input.to_i) - 1]])
+            @deals.each.with_index(1) do |deal, i|
                 puts "#{i} >> #{deal[:title]}"
             end
         elsif input == "exit"
@@ -46,8 +46,18 @@ class FlightDeals::CLI
         input = gets.chomp
         if input == "back"
             start
-        elsif (1..CITIES.size).include?(input.to_i)
-            puts "REACHED!"
+        elsif input == "exit"
+            "Goodbye"
+            exit
+        elsif (1..@deals.size).include?(input.to_i)
+            deal = @deals[input.to_i]
+            deal_details = Scraper.deal_scraper(deal[:url])
+            puts "Deal: #{deal_details.description}"
+            puts "Availability: #{deal_details.availability}"
+            puts "Website: #{deal_details.url}"
+        else
+            puts "Entry invalid. Please try again."
+            get_deals
         end
     end
 

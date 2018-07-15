@@ -10,7 +10,7 @@ class Scraper
             new_hash = {}
             new_hash[:title] = deal.css(".post-title").css("a").text
             new_hash[:description] = deal.css("p").text
-            new_hash[:deal_url] = deal.css("a").attribute("href").value
+            new_hash[:url] = deal.css("a").attribute("href").value
             new_hash
         end
 
