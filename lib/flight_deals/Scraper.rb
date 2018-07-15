@@ -15,8 +15,6 @@ class Scraper
             new_hash[:deal_url] = deal.css("a").attribute("href").value
             new_hash
         end
-        #titles = doc.css(".post-title").css("a").text
-        #description = deals.css("p").text
 
     end
 

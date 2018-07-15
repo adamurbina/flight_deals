@@ -1,9 +1,9 @@
 1. Welcome the user
 2. Display cities and ask which one user wants
-2. Serve up the flight deals
-3. Ask which deals to explore
-4. Go to deal with more info
-5. Allow user to go to site or go back to home
+-> Scrape the city page
+-> Create the deal object
+-> Display the deals objects
+-> Ask user if they want to go back or get more details on deal object
 
 ----
 CommandLine CLI
