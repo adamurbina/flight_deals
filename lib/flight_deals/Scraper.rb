@@ -16,12 +16,12 @@ class Scraper
         end
     end
 
-    # def self.deal_scraper(deal)
-    #     doc = Nokogiri::HTML(open(deal.url))
-    #     availability = doc.css(".entry-content").css("ul")[2].css("li").text
-    #     #description = doc.css(".entry-content").css("a")[0].text
-    #     deal.availability = availability
-    # end
+    def self.deal_scraper(deal)
+        doc = Nokogiri::HTML(open(deal.url))
+        availability = doc.css(".entry-content").css("ul")[2].css("li").text
+        #description = doc.css(".entry-content").css("a")[0].text
+        deal.availability = availability
+    end
 
 end
 
