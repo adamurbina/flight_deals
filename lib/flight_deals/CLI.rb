@@ -6,15 +6,23 @@ class FlightDeals::CLI
 
     def start
         welcome
+        load_cities
         display_cities
         display_deals
-        get_deals
+        #get_deals
     end
 
     def welcome
         puts "------------------------------------"
         puts "     Welcome to Flight Deals!"
         puts "------------------------------------"
+    end
+
+    def load_cities
+        URL_LOOKUP.each do |key, value|
+            new_city = City.new(key)
+            new_city.url_ext = value
+        end
     end
 
     def display_cities
@@ -26,39 +34,47 @@ class FlightDeals::CLI
 
     def display_deals
         input = gets.chomp
+
         if (1..CITIES.size).include?(input.to_i)
-            puts "Showing #{CITIES[(input.to_i)-1]} deals >>>"
-            @deals = Scraper.city_scraper(URL_LOOKUP[CITIES[(input.to_i) - 1]])
-            @deals.each.with_index(1) do |deal, i|
-                puts "#{i} >> #{deal[:title]}"
+            selected_city = CITIES[(input.to_i)-1]
+            puts "selected city >> #{selected_city}"
+            city = City.all.detect{|city| city.name == selected_city}
+            puts "city hit>> #{city.name} & #{city.url_ext}"
+
+            puts "Showing #{selected_city} deals >>>"
+
+            Scraper.city_scraper(city)
+
+            city.deals.each.with_index(1) do |deal, i|
+                puts "#{i} >> #{deal.title}"
             end
         elsif input == "exit"
             puts "Goodbye see you next time!"
             exit
         else
             puts "Input invalid. Please try again..."
-            get_deals
+            display_deals
         end
     end
 
-    def get_deals
-        puts "Select deal for more information or 'back' to go back."
-        input = gets.chomp
-        if input == "back"
-            start
-        elsif input == "exit"
-            "Goodbye"
-            exit
-        elsif (1..@deals.size).include?(input.to_i)
-            deal = @deals[input.to_i]
-            deal_details = Scraper.deal_scraper(deal[:url])
-            puts "Deal: #{deal_details.description}"
-            puts "Availability: #{deal_details.availability}"
-            puts "Website: #{deal_details.url}"
-        else
-            puts "Entry invalid. Please try again."
-            get_deals
-        end
-    end
+    # def get_deals
+    #     puts "Select deal for more information or 'back' to go back."
+    #     input = gets.chomp
+    #     if input == "back"
+    #         start
+    #     elsif input == "exit"
+    #         "Goodbye"
+    #         exit
+    #     elsif (1..@deals.size).include?(input.to_i)
+    #         deal = @deals[input.to_i]
+    #         deal_details = Scraper.deal_scraper(deal[:url])
+    #         puts "Deal: #{deal_details.description}"
+    #         puts "Availability: #{deal_details.availability}"
+    #         puts "Website: #{deal_details.url}"
+    #     else
+    #         puts "Entry invalid. Please try again."
+    #         get_deals
+    #     end
+    # end
 
 end
