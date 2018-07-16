@@ -8,7 +8,8 @@ class Scraper
         deals_html = doc.css(".entry-content")
         deals_html.collect do |deal|
             new_deal = Deals.new
-            new_deal.title = deal.css(".post-title").css("a").text
+            title = deal.css(".post-title").css("a").text.split(" – ")
+            new_deal.title = "#{title[1]} -> #{title[2]}"
             new_deal.description = deal.css("p").text
             new_deal.url = deal.css("a").attribute("href").value
             city.add_deal(new_deal)
@@ -25,4 +26,4 @@ class Scraper
 
 end
 
-# puts Scraper.deal_scraper("https://www.theflightdeal.com/2018/07/15/jetblue-134-boston-minneapolis-and-vice-versa-roundtrip-including-all-taxes/")
+#puts Scraper.deal_scraper("https://www.theflightdeal.com/2018/07/15/jetblue-134-boston-minneapolis-and-vice-versa-roundtrip-including-all-taxes/")

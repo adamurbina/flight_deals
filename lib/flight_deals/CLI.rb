@@ -12,8 +12,13 @@ class CLI
     def main_loop
         display_cities
         city = choose_city
-        display_deals(city)
-        #get_deal_details(city)
+        while true
+            display_deals(city)
+            deal = choose_deal(city)
+            get_deal_details(deal)
+            choose_next(deal)
+        end
+
     end
 
     def welcome
@@ -43,8 +48,7 @@ class CLI
             city = City.all.detect{|city| city.name == selected_city}
             return city
         elsif input == "exit"
-            puts "Goodbye see you next time!"
-            exit
+            goodbye
         else
             puts "Input invalid. Please try again..."
             choose_city
@@ -62,31 +66,52 @@ class CLI
         puts "#{i} >> #{deal.title}"
     end
 
-    def choose_details(city)
+    def choose_deal(city)
+        puts ""
         puts "Select deal for more information or 'back' to go back."
         input = gets.chomp
-    end
-
-    def get_deal_details(city)
-
         if input == "back"
             main_loop
         elsif input == "exit"
-            "Goodbye"
-            exit
+            goodbye
         elsif (1..city.deal_count).include?(input.to_i)
             deal = city.deals[(input.to_i) - 1]
-            Scraper.deal_scraper(deal)
-            puts "DEAL:          #{deal.title}"
-            puts "DESCRIPTION:   #{deal.description}"
-            puts "AVAILABILITY:  #{deal.availability}"
-            puts "WEBSITE:       #{deal.url}"
-            puts ""
-
+            return deal
         else
             puts "Entry invalid. Please try again."
-            get_deals
+            choose_deal(city)
         end
+    end
+
+    def get_deal_details(deal)
+        Scraper.deal_scraper(deal)
+        puts "DEAL:          #{deal.title}"
+        puts "DESCRIPTION:   #{deal.description}"
+        puts "AVAILABILITY:  #{deal.availability}"
+        puts "WEBSITE:       #{deal.url}"
+        puts ""
+        end
+    end
+
+    def choose_next(deal)
+        puts "What would you like to do next?"
+        puts "Enter 'open' to open the website, enter 'back' to go back to deal list, 'cities' to go back to city list, and 'exit' to quit."
+
+        input = gets.chomp
+
+        if input == "cities"
+            main_loop
+        elsif input == "open"
+            system("open #{deal.url}")
+            choose_next(deal)
+        elsif input == 'exit'
+            goodbye
+        end
+    end
+
+    def goodbye
+        puts "Goodbye see you next time!"
+        exit
     end
 
 end
