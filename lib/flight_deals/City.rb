@@ -1,5 +1,5 @@
 class City
-    attr_accessor :deals, :name, :url_ext
+    attr_accessor :deals, :name, :url_ext, :deal_count
 
     @@all = []
 
@@ -15,6 +15,10 @@ class City
 
     def self.all
         @@all
+    end
+
+    def deal_count
+        @deal_count = @deals.count
     end
 
 end

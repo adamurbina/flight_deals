@@ -11,8 +11,9 @@ class CLI
 
     def main_loop
         display_cities
-        city = display_deals
-        get_deal_details(city)
+        city = choose_city
+        display_deals(city)
+        #get_deal_details(city)
     end
 
     def welcome
@@ -32,50 +33,56 @@ class CLI
         CITIES.each.with_index(1) do |city, index|
             puts "#{index} >> #{city}"
         end
-        puts "Enter city number to get deals:"
     end
 
-    def display_deals
+    def choose_city
+        puts "Enter city number to get deals"
         input = gets.chomp
-
         if (1..CITIES.size).include?(input.to_i)
             selected_city = CITIES[(input.to_i)-1]
             city = City.all.detect{|city| city.name == selected_city}
-
-            if city.deals == []
-                Scraper.city_scraper(city)
-                puts "Loading #{city.name} deals"
-            end
-
-            puts "Showing #{selected_city} deals >>>"
-            city.deals.each.with_index(1) do |deal, i|
-                puts "#{i} >> #{deal.title}"
-            end
             return city
         elsif input == "exit"
             puts "Goodbye see you next time!"
             exit
         else
             puts "Input invalid. Please try again..."
-            display_deals
+            choose_city
         end
     end
 
-    def get_deal_details(city)
+    def display_deals(city)
+        if city.deals == []
+            Scraper.city_scraper(city)
+            puts "Loading #{city.name} deals"
+        end
+
+        puts "Showing #{city.name} deals >>>"
+        city.deals.each.with_index(1) do |deal, i|
+        puts "#{i} >> #{deal.title}"
+    end
+
+    def choose_details(city)
         puts "Select deal for more information or 'back' to go back."
         input = gets.chomp
+    end
+
+    def get_deal_details(city)
+
         if input == "back"
-            start
+            main_loop
         elsif input == "exit"
             "Goodbye"
             exit
-        elsif (1..city.deals.size).include?(input.to_i)
+        elsif (1..city.deal_count).include?(input.to_i)
             deal = city.deals[(input.to_i) - 1]
             Scraper.deal_scraper(deal)
             puts "DEAL:          #{deal.title}"
             puts "DESCRIPTION:   #{deal.description}"
             puts "AVAILABILITY:  #{deal.availability}"
             puts "WEBSITE:       #{deal.url}"
+            puts ""
+
         else
             puts "Entry invalid. Please try again."
             get_deals
