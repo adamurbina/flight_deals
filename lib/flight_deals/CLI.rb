@@ -1,6 +1,5 @@
 class CLI
 
-    CITIES = ["NEW YORK CITY", "SAN FRANCISCO", "LOS ANGELES", "BOSTON", "CHICAGO", "DALLAS", "MIAMI", "PHILLY", "PHOENIX", "PORTLAND", "SEATTLE", "DC"]
     URL_LOOKUP = {"NEW YORK CITY" => "nyc", "SAN FRANCISCO" => "sfo", "LOS ANGELES" => "lax", "BOSTON" => "boston-flight-deals", "CHICAGO" => "chicago", "DALLAS" => "dallas", "MIAMI" => "miami", "PHILLY" => "philadelphia", "PHOENIX" => "phoenix", "PORTLAND" => "portland", "SEATTLE" => "seattle-flight-deals", "DC" => "dc"}
 
     def start
@@ -31,20 +30,21 @@ class CLI
         URL_LOOKUP.each do |key, value|
             new_city = City.new(key)
             new_city.url_ext = value
+            puts new_city
         end
     end
 
     def display_cities
-        CITIES.each.with_index(1) do |city, index|
-            puts "#{index} >> #{city}"
+        URL_LOOKUP.sort.each_with_index do |(key, value), index|
+            puts "#{index + 1} >> #{key}"
         end
     end
 
     def choose_city
         puts "Enter city number to get deals"
         input = gets.chomp
-        if (1..CITIES.size).include?(input.to_i)
-            selected_city = CITIES[(input.to_i)-1]
+        if (1..URL_LOOKUP.size).include?(input.to_i)
+            selected_city = URL_LOOKUP.sort[(input.to_i)-1][0]
             city = City.all.detect{|city| city.name == selected_city}
             return city
         elsif input == "exit"
