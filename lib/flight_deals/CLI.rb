@@ -30,7 +30,6 @@ class CLI
         URL_LOOKUP.each do |city_name, city_url|
             new_city = City.new(city_name)
             new_city.url_ext = city_url
-            puts new_city
         end
     end
 
