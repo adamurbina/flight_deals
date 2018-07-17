@@ -27,16 +27,16 @@ class CLI
     end
 
     def load_cities
-        URL_LOOKUP.each do |key, value|
-            new_city = City.new(key)
-            new_city.url_ext = value
+        URL_LOOKUP.each do |city_name, city_url|
+            new_city = City.new(city_name)
+            new_city.url_ext = city_url
             puts new_city
         end
     end
 
     def display_cities
-        URL_LOOKUP.sort.each_with_index do |(key, value), index|
-            puts "#{index + 1} >> #{key}"
+        URL_LOOKUP.sort.each_with_index do |(city_name, city_url), index|
+            puts "#{index + 1} >> #{city_name}"
         end
     end
 
@@ -57,13 +57,13 @@ class CLI
 
     def display_deals(city)
         if city.deals == []
-            Scraper.city_scraper(city)
             puts "Loading #{city.name} deals"
+            Scraper.city_scraper(city)
         end
 
         puts "Showing #{city.name} deals >>>"
-        city.deals.each.with_index(1) do |deal, i|
-        puts "#{i} >> #{deal.title}"
+        city.deals.each.with_index(1) do |deal, index|
+        puts "#{index} >> #{deal.title}"
     end
 
     def choose_deal(city)
@@ -84,7 +84,11 @@ class CLI
     end
 
     def get_deal_details(deal)
-        Scraper.deal_scraper(deal)
+        if !deal.availability
+            puts "Loading deal..."
+            Scraper.deal_scraper(deal)
+        end
+
         puts "DEAL:          #{deal.title}"
         puts "DESCRIPTION:   #{deal.description}"
         puts "AVAILABILITY:  #{deal.availability}"
@@ -102,7 +106,7 @@ class CLI
         if input == "cities"
             main_loop
         elsif input == "open"
-            system("open #{deal.url}")
+            deal.open
             choose_next(deal)
         elsif input == 'exit'
             goodbye
@@ -110,7 +114,7 @@ class CLI
     end
 
     def goodbye
-        puts "Goodbye see you next time!"
+        puts "Goodbye! See you next time!"
         exit
     end
 

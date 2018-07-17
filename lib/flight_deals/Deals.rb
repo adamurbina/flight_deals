@@ -1,6 +1,6 @@
 class Deals
     attr_accessor :title, :description, :url, :availability
-    
+
     @@all = []
 
     def initialize
@@ -9,6 +9,10 @@ class Deals
 
     def self.all
         @@all
+    end
+
+    def open
+        system("open #{@url}")
     end
 
 end

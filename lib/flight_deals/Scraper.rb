@@ -1,6 +1,3 @@
-require "nokogiri"
-require "open-uri"
-
 class Scraper
 
     def self.city_scraper(city)
@@ -24,5 +21,3 @@ class Scraper
     end
 
 end
-
-#puts Scraper.deal_scraper("https://www.theflightdeal.com/2018/07/15/jetblue-134-boston-minneapolis-and-vice-versa-roundtrip-including-all-taxes/")
