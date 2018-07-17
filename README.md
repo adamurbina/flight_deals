@@ -1,8 +1,6 @@
 # FlightDeals
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/flight_deals`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+FlightDeals scrapes theflightdeal.com for current deals.
 
 ## Installation
 
@@ -22,7 +20,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Select city to see all current deals in that city. Then select deal for more information or to be directed to the deal website.
 
 ## Development
 
